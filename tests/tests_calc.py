@@ -14,3 +14,6 @@ class CalculatorTests(unittest.TestCase):
 # usando pytest
 def test_suma(): 
     assert sum(4, 3) == 7
+
+def test_subtract():
+    assert subtract(4, 3) == 1
