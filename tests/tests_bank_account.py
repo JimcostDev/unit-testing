@@ -1,7 +1,7 @@
 import pytest
 import os
 from src.bank_account import BankAccount
-from src.exceptions import InsufficientFundsError, WithdrawalTimeRestrictionError
+from src.exceptions import InsufficientFundsError
 
 @pytest.fixture
 def setup_account():
@@ -45,7 +45,7 @@ def test_withdraw_insufficient_funds(setup_account):
         
     
 # saltar pruebas
-@pytest.mark.skip
+@pytest.mark.skip(reason="Trabajo en progreso")
 def test_deposit_skip():
     # Esta prueba será omitida
     result = 1000 + 250
@@ -57,3 +57,9 @@ def test_withdra_skip():
     # Esta prueba solo se ejecutará en plataformas que no sean Windows
     result = 1000 - 250
     assert result == 750
+
+
+@pytest.mark.skipunless(sys.platform == "linux", reason="Solo se ejecuta en Linux")
+def test_linux_only_feature():
+    # Esta prueba solo se ejecutará en sistemas Linux
+    assert 1 + 1 == 2
