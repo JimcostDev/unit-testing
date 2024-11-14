@@ -36,3 +36,7 @@ def test_string_error():
     assert "Error" in my_string  # Verifica si "Error" está en la cadena
     with pytest.raises(ValueError, match="Something went wrong"):
         raise ValueError("Something went wrong")  # Verifica que el mensaje de la excepción coincida
+
+def test_value_error():
+    with pytest.raises(ValueError):
+        int('o8r')

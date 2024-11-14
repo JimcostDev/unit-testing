@@ -42,3 +42,18 @@ def test_withdraw_insufficient_funds(setup_account):
     # Intenta retirar más de lo que hay en la cuenta
     with pytest.raises(InsufficientFundsError, match="Withdrawal of 2000 exceeds balance 1000"):
         setup_account.withdraw(2000) 
+        
+    
+# saltar pruebas
+@pytest.mark.skip
+def test_deposit_skip():
+    # Esta prueba será omitida
+    result = 1000 + 250
+    assert result == 1250
+
+import sys
+@pytest.mark.skipif(sys.platform == "win32", reason="No se ejecuta en Windows")
+def test_withdra_skip():
+    # Esta prueba solo se ejecutará en plataformas que no sean Windows
+    result = 1000 - 250
+    assert result == 750
