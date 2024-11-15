@@ -1,10 +1,11 @@
 import pytest
 
+@pytest.mark.mi_suite
 def test_addition():
     result = 1 + 1
     assert result == 2 # Verifica que el resultado sea 2
 
-
+@pytest.mark.mi_suite
 def test_list():
     my_list = [1, 2, 3]
     assert 2 in my_list  # Verifica que 2 esté en la lista
