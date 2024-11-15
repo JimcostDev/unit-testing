@@ -1,7 +1,9 @@
+from datetime import datetime
 import pytest
 import os
 from src.bank_account import BankAccount
-from src.exceptions import InsufficientFundsError
+from src.exceptions import InsufficientFundsError, WithdrawalTimeRestrictionError
+from unittest.mock import patch
 
 @pytest.fixture
 def setup_account():
@@ -63,3 +65,11 @@ def test_withdra_skip():
 def test_linux_only_feature():
     # Esta prueba solo se ejecutará en sistemas Linux
     assert 1 + 1 == 2
+    
+@patch("src.bank_account.datetime")
+def test_withdraw_disallow_before_bussines_hours(mock_datetime, setup_account):
+    mock_datetime.now.return_value.hour = 10
+    # Verifica que se lanza la excepción al intentar retirar fuera del horario permitido
+    with pytest.raises(WithdrawalTimeRestrictionError):
+       setup_account.withdraw(100)
+       

@@ -63,3 +63,36 @@ def test_perfil_endpoint_mock(mock_get):
     assert response.status_code == 200
     assert response.json()["username"] == "jimcostdev"
     mock_get.assert_called_once_with("https://jimcostdev.koyeb.app/perfil/jimcostdev")
+    
+@patch("httpx.Client.get")
+def test_perfil_endpoint_side_effect(mock_get):
+    # Definir un side_effect para devolver la respuesta simulada
+    def side_effect(url, **kwargs):
+        if url == "https://jimcostdev.koyeb.app/perfil/jimcostdev":
+            return httpx.Response(
+                status_code=200,
+                json={
+                    "rol": "Software Engineer",
+                    "description": "Soy Ingeniero Informático con sólida experiencia en el desarrollo de software.",
+                    "skills": ["python", "javascript", "fastapi"],
+                    "username": "jimcostdev",
+                    "avatar": "https://avatars.githubusercontent.com/u/53100460?v=4",
+                    "id": 1
+                }
+            )
+        else:
+            return httpx.Response(status_code=404, json={"detail": "Not Found"})
+
+    # Asigna el side_effect al mock
+    mock_get.side_effect = side_effect
+
+    # Simula el cliente HTTP
+    with httpx.Client() as client:
+        response = client.get("https://jimcostdev.koyeb.app/perfil/jimcostdev")
+
+    # Comprueba que los datos sean correctos
+    assert response.status_code == 200
+    assert response.json()["username"] == "jimcostdev"
+    
+    # Verifica que el mock fue llamado una vez con la URL correcta
+    mock_get.assert_called_once_with("https://jimcostdev.koyeb.app/perfil/jimcostdev")
