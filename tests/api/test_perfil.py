@@ -57,8 +57,9 @@ def test_perfil_endpoint_mock(mock_get):
 
     # Simula el cliente HTTP
     with httpx.Client() as client:
-        response = client.get("https://ficticious-url.local/test-endpoint")
+        response = client.get("https://jimcostdev.koyeb.app/perfil/jimcostdev")
 
     # Comprueba que los datos sean correctos
     assert response.status_code == 200
     assert response.json()["username"] == "jimcostdev"
+    mock_get.assert_called_once_with("https://jimcostdev.koyeb.app/perfil/jimcostdev")
