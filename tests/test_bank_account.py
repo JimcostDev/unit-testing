@@ -68,8 +68,35 @@ def test_linux_only_feature():
     
 @patch("src.bank_account.datetime")
 def test_withdraw_disallow_before_bussines_hours(mock_datetime, setup_account):
-    mock_datetime.now.return_value.hour = 10
+    mock_datetime.now.return_value.hour = 7 # mayor a 7 para fallar
     # Verifica que se lanza la excepción al intentar retirar fuera del horario permitido
     with pytest.raises(WithdrawalTimeRestrictionError):
        setup_account.withdraw(100)
        
+
+# test con multiples valores.
+@pytest.mark.parametrize("deposit_amount, expected_balance", [
+    (1000, 2000),
+    (3000, 4000),
+    (5000, 6000),
+])
+def test_deposit_multiple_values(setup_account, deposit_amount, expected_balance):
+    """
+    Prueba el método deposit con múltiples valores usando parametrización.
+    """
+    new_balance = setup_account.deposit(deposit_amount)
+    assert new_balance == expected_balance
+
+       
+# test con multiples valores usando un diccionario.
+@pytest.mark.parametrize("data", [
+    {"deposit_amount": 1000, "expected_balance": 2000},
+    {"deposit_amount": 3000, "expected_balance": 4000},
+    {"deposit_amount": 5000, "expected_balance": 6000},
+])
+def test_deposit_multiple_values_dict(setup_account, data):
+    """
+    Prueba el método deposit con múltiples valores usando un diccionario.
+    """
+    new_balance = setup_account.deposit(data["deposit_amount"])
+    assert new_balance == data["expected_balance"]
